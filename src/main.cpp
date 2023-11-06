@@ -40,6 +40,7 @@ void setup()
 
 void loop()
 {
+  static unsigned long t = 0;
   blink_led();
   byte packet[64];
 
@@ -54,7 +55,7 @@ void loop()
     Serial.println();
   }
 
-  if (!digitalRead(BUTTON))
+  if (!digitalRead(BUTTON) || millis() - t > 1000)
   {
     if (button_state)
     {
@@ -68,6 +69,7 @@ void loop()
       slave_cnt += 1;
       slave_cnt %= 2;
     }
+    t = millis();
   }
   else
   {

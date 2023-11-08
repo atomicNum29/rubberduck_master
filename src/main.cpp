@@ -17,7 +17,8 @@ CC1101 lora;
 #define GDO0 20
 bool request_slave(const char *s_id, byte *_packet);
 
-const char *slave_ids[] = {"1234", "5678"};
+const char *slave_ids[] = {"5678"}; //  {"1234",
+#define SLAVE_NUM 1
 int slave_cnt = 0;
 
 void blink_led();
@@ -55,7 +56,7 @@ void loop()
     Serial.println();
   }
 
-  if (!digitalRead(BUTTON) || millis() - t > 1000)
+  if (!digitalRead(BUTTON) || millis() - t > 1500)
   {
     if (button_state)
     {
@@ -66,8 +67,12 @@ void loop()
       {
         Serial.println(String(slave_ids[slave_cnt]) + ": packet request");
       }
+      else
+      {
+        Serial.println(String(slave_ids[slave_cnt]) + ": packet request fail...");
+      }
       slave_cnt += 1;
-      slave_cnt %= 2;
+      slave_cnt %= SLAVE_NUM;
     }
     t = millis();
   }
